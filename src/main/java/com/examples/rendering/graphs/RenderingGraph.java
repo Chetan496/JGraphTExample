@@ -12,7 +12,11 @@ import org.jgrapht.ext.JGraphXAdapter;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 
+import com.mxgraph.layout.mxIGraphLayout;
+import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
+import com.mxgraph.model.mxGraphModel;
 import com.mxgraph.util.mxCellRenderer;
+import com.mxgraph.view.mxGraph;
 
 public class RenderingGraph {
 
@@ -23,13 +27,40 @@ public class RenderingGraph {
 		UndirectedGraph<String, DefaultEdge> stringGraph = createStringGraph();
 		
 		/*now use JGraphX to render it.*/
-		JGraphXAdapter<String, DefaultEdge> gAdapter = new 
+		
+		JGraphXAdapter<String, DefaultEdge> jgxAdapter = new 
 				JGraphXAdapter<String, DefaultEdge>(stringGraph) ;
+		
+		
+		mxGraph graphMx = new mxGraph() ;
+		graphMx.insertVertex(graphMx.getDefaultParent(), "Start", "Start", 0.0, 0.0, 50.0, 30.0, "rounded");
+		graphMx.insertVertex(graphMx.getDefaultParent(), "Ende", "Ende", 0.0, 0.0, 50.0, 30.0, "rounded");
+
+		graphMx.insertEdge(graphMx.getDefaultParent(), null, "", ((mxGraphModel)graphMx.getModel()).getCell("Start"), ((mxGraphModel)graphMx.getModel()).getCell("Ende"));
+
+		mxIGraphLayout layout = new mxHierarchicalLayout(graphMx);
+		layout.execute(graphMx.getDefaultParent());
+
+		
+/*		mxGraph graphMx = new mxGraph();
+
+		graphMx.insertVertex(graphMx.getDefaultParent(), "Start", "Start", 0.0, 0.0, 50.0, 30.0, "rounded");
+		graphMx.insertVertex(graphMx.getDefaultParent(), "Ende", "Ende", 0.0, 0.0, 50.0, 30.0, "rounded");
+
+		graphMx.insertEdge(graphMx.getDefaultParent(), null, "", ((mxGraphModel)graphMx.getModel()).getCell("Start"), ((mxGraphModel)graphMx.getModel()).getCell("Ende"));
+
+		mxIGraphLayout layout = new mxHierarchicalLayout(graphMx);
+		layout.execute(graphMx.getDefaultParent());
+
+		BufferedImage image = mxCellRenderer.createBufferedImage(graphMx, null, 1, Color.WHITE, true, null);
+		return image;*/
+
 		
 		
 		
 		BufferedImage image = mxCellRenderer.
-				createBufferedImage(gAdapter, null, 2, Color.WHITE, true, null);
+				createBufferedImage(graphMx, null, 
+						4, Color.WHITE, true, null);
 		
 		try {
 			ImageIO.write(image, "PNG", new File("D:\\graph.png")) ;
@@ -47,22 +78,19 @@ public class RenderingGraph {
         UndirectedGraph<String, DefaultEdge> g =
                 new SimpleGraph<String, DefaultEdge>(DefaultEdge.class);
 
-        String v1 = "v1";
-        String v2 = "v2";
-        String v3 = "v3";
-        String v4 = "v4";
+        String v1 = "1";
+        String v2 = "2";
+
 
         // add the vertices
         g.addVertex(v1);
         g.addVertex(v2);
-        g.addVertex(v3);
-        g.addVertex(v4);
+
 
         // add edges to create a circuit
-        g.addEdge(v1, v2, new DefaultEdge()) ;
-        g.addEdge(v2, v3, new DefaultEdge());
-        g.addEdge(v3, v4, new DefaultEdge());
-        g.addEdge(v4, v1, new DefaultEdge());
+        g.addEdge(v1, v2) ;
+
+
         
        
         return g;
