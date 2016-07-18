@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.examples.rendering.graphs</groupId>
+  <artifactId>JGraphXExample</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+  
+  <dependencies>
+  
+    <!-- https://mvnrepository.com/artifact/org.jgrapht/jgrapht-core -->
+	<dependency>
+	    <groupId>org.jgrapht</groupId>
+	    <artifactId>jgrapht-core</artifactId>
+	    <version>0.9.2</version>
+	</dependency>
+	  
+  	
+  	<!-- https://mvnrepository.com/artifact/org.tinyjee.jgraphx/jgraphx -->
+	<dependency>
+	    <groupId>org.tinyjee.jgraphx</groupId>
+	    <artifactId>jgraphx</artifactId>
+	    <version>3.4.1.3</version>
+	</dependency>
+	
+	
+  	
+  </dependencies>
+  
+</project>
