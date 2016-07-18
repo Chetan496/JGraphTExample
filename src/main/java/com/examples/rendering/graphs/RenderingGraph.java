@@ -15,6 +15,7 @@ import org.jgrapht.graph.SimpleGraph;
 import com.mxgraph.layout.mxIGraphLayout;
 import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
 import com.mxgraph.model.mxGraphModel;
+import com.mxgraph.model.mxIGraphModel;
 import com.mxgraph.util.mxCellRenderer;
 import com.mxgraph.view.mxGraph;
 
@@ -31,14 +32,19 @@ public class RenderingGraph {
 		JGraphXAdapter<String, DefaultEdge> jgxAdapter = new 
 				JGraphXAdapter<String, DefaultEdge>(stringGraph) ;
 		
+		mxGraph graphMx = jgxAdapter.getView().getGraph() ;
 		
-		mxGraph graphMx = new mxGraph() ;
-		graphMx.insertVertex(graphMx.getDefaultParent(), "Start", "Start", 0.0, 0.0, 50.0, 30.0, "rounded");
-		graphMx.insertVertex(graphMx.getDefaultParent(), "Ende", "Ende", 0.0, 0.0, 50.0, 30.0, "rounded");
+		//mxGraph graphMx = new mxGraph() ;
+		
+		//Object defaultParent = graphMx.getDefaultParent() ;
+		/*Insert vertices */
+		//graphMx.insertVertex(defaultParent, "Start", "Start", 0.0, 0.0, 50.0, 30.0, "rounded");
+		//graphMx.insertVertex(defaultParent, "Ende", "Ende", 0.0, 0.0, 50.0, 30.0, "rounded");
+		
+		/*Insert edge */
+		//graphMx.insertEdge(defaultParent, null, "", ((mxGraphModel)graphMx.getModel()).getCell("Start"), ((mxGraphModel)graphMx.getModel()).getCell("Ende"));
 
-		graphMx.insertEdge(graphMx.getDefaultParent(), null, "", ((mxGraphModel)graphMx.getModel()).getCell("Start"), ((mxGraphModel)graphMx.getModel()).getCell("Ende"));
-
-		mxIGraphLayout layout = new mxHierarchicalLayout(graphMx);
+		mxIGraphLayout layout = new mxHierarchicalLayout(graphMx );
 		layout.execute(graphMx.getDefaultParent());
 
 		
@@ -60,7 +66,7 @@ public class RenderingGraph {
 		
 		BufferedImage image = mxCellRenderer.
 				createBufferedImage(graphMx, null, 
-						4, Color.WHITE, true, null);
+						1, Color.WHITE, true, null);
 		
 		try {
 			ImageIO.write(image, "PNG", new File("D:\\graph.png")) ;
@@ -80,18 +86,24 @@ public class RenderingGraph {
 
         String v1 = "1";
         String v2 = "2";
+        String v3 = "3" ;
+        String v4 = "4" ;
 
 
         // add the vertices
         g.addVertex(v1);
         g.addVertex(v2);
+        g.addVertex(v3);
+        g.addVertex(v4);
 
 
         // add edges to create a circuit
         g.addEdge(v1, v2) ;
+        g.addEdge(v2, v3) ;
+        g.addEdge(v3, v4) ;
+        g.addEdge(v3, v1) ;
+        g.addEdge(v4, v1) ;
 
-
-        
        
         return g;
     }
