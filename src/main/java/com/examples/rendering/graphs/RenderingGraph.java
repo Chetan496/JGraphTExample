@@ -40,8 +40,9 @@ public class RenderingGraph {
 		JGraphXAdapter<String, DefaultEdge> jgxAdapter = new JGraphXAdapter<String, DefaultEdge>(
 				stringGraph);
 
-		// mxGraph graphMx = jgxAdapter.getView().getGraph();
-		mxGraph graphMx = createMxGraph();
+		mxGraph graphMx = jgxAdapter.getView().getGraph();
+
+		// mxGraph graphMx = createMxGraph();
 
 		// mxGraph graphMx = new mxGraph() ;
 
@@ -57,9 +58,24 @@ public class RenderingGraph {
 		// ((mxGraphModel)graphMx.getModel()).getCell("Start"),
 		// ((mxGraphModel)graphMx.getModel()).getCell("Ende"));
 
+		/*
+		 * For your problem of visualizing all objects in Appian application,
+		 * the CompactTreeLayout is suitable
+		 */
+		/*
+		 * an explanation of compactTreeLayout is here:
+		 * http://hci.stanford.edu/courses
+		 * /cs448b/f09/lectures/CS448B-20091021-GraphsAndTrees.pdf
+		 */
+		/*
+		 * vertical layout - the graph vertices will be structured like a Tree.
+		 * All node will be layed out in vertical direction
+		 */
 		mxCompactTreeLayout customLayout = new mxCompactTreeLayout(graphMx,
-				true);
-		customLayout.setNodeDistance(80);
+				false);
+		customLayout.setNodeDistance(80); // distance between each node - each
+											// vertex will be like a treenode
+		customLayout.setLevelDistance(10);
 		mxIGraphLayout layout = customLayout;
 
 		layout.execute(graphMx.getDefaultParent());
@@ -135,7 +151,8 @@ public class RenderingGraph {
 		dirGraph.addVertex(v3);
 		dirGraph.addVertex(v4);
 
-		dirGraph.addEdge(v1, v2);
+		DefaultEdge edge = dirGraph.addEdge(v1, v2);
+
 		dirGraph.addEdge(v2, v3);
 		dirGraph.addEdge(v3, v4);
 
@@ -173,6 +190,7 @@ public class RenderingGraph {
 			Object v3 = graph.insertVertex(parent, null, "Alone", 200, 350, 80,
 					30, "ROUNDED");
 			Object e1 = graph.insertEdge(parent, null, "", v1, v2);
+			Object e2 = graph.insertEdge(parent, null, "", v1, v3);
 		} finally {
 			// Updates the display
 			graph.getModel().endUpdate();
