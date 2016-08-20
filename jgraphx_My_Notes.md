@@ -38,6 +38,9 @@ JGraphX supports tree, force-directed and hierarchical layouts.
 
 `graph.getDefaultParent()` returns the default parent cell - which is an invisible cell with the same bounds as the graph.
 
+### About Graph Layouts:
+You can click on this [link](https://jgraph.github.io/mxgraph/docs/js-api/files/layout/mxCircleLayout-js.html) to know more about the different layouts used by jGraphX for laying out the graph vertices and edges.
+
 ### Customizing the shapes of the Vertices:
 You can use custom shapes for the Vertices.
 JGraphX allows using the Stencils from the Dia tool.
