@@ -15,7 +15,7 @@ import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleDirectedGraph;
 import org.jgrapht.graph.SimpleGraph;
 
-import com.mxgraph.layout.mxCompactTreeLayout;
+import com.mxgraph.layout.mxCircleLayout;
 import com.mxgraph.layout.mxIGraphLayout;
 import com.mxgraph.util.mxCellRenderer;
 import com.mxgraph.util.mxConstants;
@@ -40,9 +40,9 @@ public class RenderingGraph {
 		JGraphXAdapter<String, DefaultEdge> jgxAdapter = new JGraphXAdapter<String, DefaultEdge>(
 				stringGraph);
 
-		mxGraph graphMx = jgxAdapter.getView().getGraph();
+		// mxGraph graphMx = jgxAdapter.getView().getGraph();
 
-		// mxGraph graphMx = createMxGraph();
+		mxGraph graphMx = createMxGraphUsingSamePositions();
 
 		// mxGraph graphMx = new mxGraph() ;
 
@@ -71,11 +71,19 @@ public class RenderingGraph {
 		 * vertical layout - the graph vertices will be structured like a Tree.
 		 * All node will be layed out in vertical direction
 		 */
-		mxCompactTreeLayout customLayout = new mxCompactTreeLayout(graphMx,
-				false);
-		customLayout.setNodeDistance(80); // distance between each node - each
-											// vertex will be like a treenode
-		customLayout.setLevelDistance(10);
+		/*
+		 * mxCompactTreeLayout customLayout = new mxCompactTreeLayout(graphMx,
+		 * false);
+		 */
+		// circleLayout seems to be quite a good fit for your use-case
+		mxCircleLayout customLayout = new mxCircleLayout(graphMx);
+
+		// distance between each node
+		// customLayout.setNodeDistance(80);
+
+		// distnace between each level of tree
+		// customLayout.setLevelDistance(10);
+
 		mxIGraphLayout layout = customLayout;
 
 		layout.execute(graphMx.getDefaultParent());
@@ -191,6 +199,48 @@ public class RenderingGraph {
 					30, "ROUNDED");
 			Object e1 = graph.insertEdge(parent, null, "", v1, v2);
 			Object e2 = graph.insertEdge(parent, null, "", v1, v3);
+		} finally {
+			// Updates the display
+			graph.getModel().endUpdate();
+		}
+
+		return graph;
+	}
+
+	/* This method is not specifying the geometry anywhere.. */
+	public static mxGraph createMxGraphUsingSamePositions() {
+		mxGraph graph = new mxGraph();
+
+		/* we created a Stylesheet */
+		mxStylesheet stylesheet = graph.getStylesheet();
+		Hashtable<String, Object> style = new Hashtable<String, Object>();
+		style.put(mxConstants.STYLE_FONTCOLOR, "#774400");
+		style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_DOUBLE_ELLIPSE);
+		stylesheet.putCellStyle("ROUNDED", style);
+
+		graph.setStylesheet(stylesheet); // set the Stylesheet
+
+		Object parent = graph.getDefaultParent();
+
+		/*
+		 * note that we are specifying the same x and y co-ordinates for every
+		 * vertex. And we are specifying different height and width.. so if you
+		 * are using a layout algorithm, you need not care about writing the
+		 * logic for x and y co-ordinates for each vertex.
+		 */
+		graph.getModel().beginUpdate();
+		try {
+
+			Object v1 = graph.insertVertex(parent, null, "Hello", 20, 20, 80,
+					30, "ROUNDED");
+			Object v2 = graph.insertVertex(parent, null, "World!", 20, 20, 120,
+					30, "ROUNDED");
+			Object v3 = graph.insertVertex(parent, null, "Alone", 20, 20, 120,
+					30, "ROUNDED");
+			Object e1 = graph.insertEdge(parent, null, "", v1, v2);
+			Object e2 = graph.insertEdge(parent, null, "", v2, v3);
+			Object e3 = graph.insertEdge(parent, null, "", v1, v3);
+
 		} finally {
 			// Updates the display
 			graph.getModel().endUpdate();
